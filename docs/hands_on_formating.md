@@ -127,3 +127,35 @@ for cell in nb.get('cells', []):
 with open(notebook_path, 'w', encoding='utf-8') as f:
     json.dump(nb, f, indent=1, ensure_ascii=False)
 ```
+
+---
+
+### Case: GitHub Preview Fails (Invalid Notebook: 'execution_count' is not valid for markdown cells)
+
+#### 🚨 Symptoms
+When viewing a Jupyter notebook (`.ipynb`) in GitHub, the preview fails with:
+> Invalid Notebook
+> {... 'cell_type': 'markdown', 'execution_count': None ...} is not valid under any of the given schemas
+
+#### 🔍 Cause
+A markdown cell contains the `"execution_count"` property, which is only valid for code cells.
+
+#### 🛠 Fix
+Run the following Python script to remove `"execution_count"` from markdown cells:
+
+```python
+import json
+
+notebook_path = "hands-on/CVAE_hands_on.ipynb"
+
+with open(notebook_path, 'r', encoding='utf-8') as f:
+    nb = json.load(f)
+
+for cell in nb.get('cells', []):
+    if cell.get('cell_type') == 'markdown' and 'execution_count' in cell:
+        del cell['execution_count']
+
+with open(notebook_path, 'w', encoding='utf-8') as f:
+    json.dump(nb, f, indent=1, ensure_ascii=False)
+```
+```
