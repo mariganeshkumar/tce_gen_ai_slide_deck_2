@@ -158,4 +158,39 @@ for cell in nb.get('cells', []):
 with open(notebook_path, 'w', encoding='utf-8') as f:
     json.dump(nb, f, indent=1, ensure_ascii=False)
 ```
+
+---
+
+## 🧠 Neural Network Modeling Standards for Students
+
+To make the code more pedagogical and easier for students to understand, follow these conventions when defining PyTorch models in hands-on notebooks:
+
+### 1. Explicit Dimension Changes
+Avoid using strided convolutions or transpose convolutions for dimension changes, as their math can be counter-intuitive for learners. Instead:
+- **Reduction**: Use dimension-preserving convolutions (e.g., `stride=1`, `padding=1` for $3\times3$ kernels) followed by explicit `nn.MaxPool2d(kernel_size=2, stride=2)` for downscaling.
+- **Expansion**: Use `nn.Upsample(scale_factor=2, mode='nearest')` followed by dimension-preserving convolutions for upscaling.
+
+*Example (Encoder):*
+```python
+nn.Sequential(
+    nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1),
+    nn.ReLU(),
+    nn.MaxPool2d(kernel_size=2, stride=2)
+)
 ```
+
+### 2. Self-Documenting Named Arguments
+Always use explicit keyword arguments for layer parameters instead of relying on positional arguments. This helps students understand what each number represents without looking up documentation.
+- For `nn.Linear`: Use `in_features` and `out_features`.
+- For `nn.Conv2d`: Use `in_channels`, `out_channels`, `kernel_size`, `stride`, `padding`.
+- For `nn.MaxPool2d`: Use `kernel_size` and `stride`.
+
+*Example:*
+```python
+# GOOD (Self-documenting)
+nn.Linear(in_features=7*7*32, out_features=latent_dim)
+
+# AVOID (Positional)
+nn.Linear(7*7*32, latent_dim)
+```
+
