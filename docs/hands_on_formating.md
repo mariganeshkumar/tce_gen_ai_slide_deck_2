@@ -56,9 +56,9 @@ Please fill in your details below before submitting.
 
 Please submit your completed `.ipynb` notebook file to the Google Form linked below:
 
-🔗 **[Submit Here](https://docs.google.com/forms/d/e/.../viewform?usp=dialog)**
+🔗 [Submit Here](https://docs.google.com/forms/d/e/1FAIpQLSeEHrefPva1f6_TGCoW-yjmp_NnAb0Be2a12mYpoKS-NtLc4A/viewform?usp=dialog)
 
-⚠️ **Deadline:** [Specify Deadline Here]
+⚠️ **Deadline:** March 29, 2026, 11:59:00 PM GMT+5:30
 ```
 
 ---
