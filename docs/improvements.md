@@ -29,7 +29,7 @@ The `docs/summary.md` is a good overview.
 
 ## Checklist
 - [x] Fix notation inconsistency in `main.tex` (latent dimension $k$ vs $d$).
-- [ ] Correct typo "postierior" to "posterior" in `main.tex` (line 719).
-- [ ] Explore using `listings` or `minted` for code snippets in `main.tex`.
+- [x] Correct typo "postierior" to "posterior" in `main.tex` (line 719).
+- [x] Explore using `listings` or `minted` for code snippets in `main.tex`.
 - [ ] Modularize `main.tex` by splitting it into smaller files.
 - [ ] Add prerequisites/setup section to `docs/summary.md` if necessary.

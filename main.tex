@@ -10,6 +10,20 @@
 \usepackage{attachfile}
 \usetikzlibrary{arrows,shapes,positioning,fit,bayesnet,calc,decorations.pathreplacing,backgrounds}
 
+\usepackage{listings}
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{purple},
+  backgroundcolor=\color{gray!10},
+  frame=single,
+  rulecolor=\color{gray!30},
+  breaklines=true,
+  showstringspaces=false
+}
+
 
 
 
@@ -716,7 +730,7 @@
 \item VAE is a latent variable model: $p(x,z) = p(z)p(x|z)$ \textcolor{blue}{($z$ is fixed, $x$ is unknown)}
 \item Goal: Maximize likelihood of observed data $p(x)$
 \item Problem: $p(x) = \int p(z)p(x|z)dz$ is intractable
-\item Solution: Variational approximation with $q(z|x)$ (approximate postierior for $p(z|x)$)
+\item Solution: Variational approximation with $q(z|x)$ (approximate posterior for $p(z|x)$)
 \end{itemize}
 
 \begin{center}
@@ -1015,7 +1029,7 @@
 \end{frame}
 
 
-\begin{frame}{Mathematics of Reparameterization}
+\begin{frame}[fragile]{Mathematics of Reparameterization}
 \begin{itemize}
 \item Original formulation: $z \sim \mathcal{N}(\mu, \sigma^2)$
 \item Reparameterized: $z = \mu + \sigma \odot \epsilon$, $\epsilon \sim \mathcal{N}(0, I)$
@@ -1032,15 +1046,14 @@
 \node[rectangle,draw,fill=blue!10,rounded corners] at (0,0) {$z \sim \mathcal{N}(\mu, \sigma^2)$};
 \node[rectangle,draw,fill=green!10,rounded corners] at (6,0) {$z = \mu + \sigma \odot \epsilon, \epsilon \sim \mathcal{N}(0, I)$};
 \draw[<->,thick] (1.5,0) -- (3,0) node[midway,above] {Equivalent};
-
-% Implementation code
-\node[rectangle,draw,fill=gray!10,rounded corners,text width=10cm] at (3,-2) {
-\texttt{def reparameterize(mu, logvar):}\\
-\texttt{~~std = torch.exp(0.5 * logvar)}\\
-\texttt{~~eps = torch.randn\_like(std)}\\
-\texttt{~~return mu + eps * std}
-};
 \end{tikzpicture}
+
+\begin{lstlisting}
+def reparameterize(mu, logvar):
+    std = torch.exp(0.5 * logvar)
+    eps = torch.randn_like(std)
+    return mu + eps * std
+\end{lstlisting}
 \end{center}
 \end{frame}
 
@@ -1565,20 +1578,15 @@ Common debugging tips:
 \end{center}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 \centering
-\begin{tikzpicture}
-    % Code implementation
-\node[rectangle,draw,fill=gray!10,rounded corners,text width=10cm] at (2,-2) {
-\texttt{def reconstruction\_loss(x, x\_params, distribution):}\\
-\texttt{~~if distribution == 'bernoulli':}\\
-\texttt{~~~~return F.binary\_cross\_entropy(x\_params, x, reduction='sum')}\\
-\texttt{~~elif distribution == 'gaussian':}\\
-\texttt{~~~~return F.mse\_loss(x\_params, x, reduction='sum')}
-};
-\end{tikzpicture}
-
-    
+\begin{lstlisting}
+def reconstruction_loss(x, x_params, distribution):
+    if distribution == 'bernoulli':
+        return F.binary_cross_entropy(x_params, x, reduction='sum')
+    elif distribution == 'gaussian':
+        return F.mse_loss(x_params, x, reduction='sum')
+\end{lstlisting}
 \end{frame}
 
 
@@ -1875,7 +1883,7 @@ where $\beta_t$ increases from 0 to final value over training
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 
 
 \begin{center}
@@ -1892,17 +1900,16 @@ where $\beta_t$ increases from 0 to final value over training
 \draw[domain=0:8, smooth, variable=\x, blue, thick]
   plot ({\x}, {2/(1+exp(-(\x-3)))});
 \node[blue] at (6,2.5) {Sigmoid warm-up};
-
-% Implementation
-\node[rectangle,draw,fill=gray!10,rounded corners,text width=8cm] at (4,-2) {
-\texttt{\# Linear KL annealing}\\
-\texttt{def get\_beta(step, warmup\_steps, max\_beta=1.0):}\\
-\texttt{~~if step > warmup\_steps:}\\
-\texttt{~~~~return max\_beta}\\
-\texttt{~~else:}\\
-\texttt{~~~~return max\_beta * (step / warmup\_steps)}
-};
 \end{tikzpicture}
+
+\begin{lstlisting}
+# Linear KL annealing
+def get_beta(step, warmup_steps, max_beta=1.0):
+    if step > warmup_steps:
+        return max_beta
+    else:
+        return max_beta * (step / warmup_steps)
+\end{lstlisting}
 \end{center}  
 \end{frame}
 
@@ -2116,20 +2123,17 @@ Warning signs to monitor:
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
 \centering
-\begin{tikzpicture}
-    % Example implementation
-\node[rectangle,draw,fill=gray!10,rounded corners,text width=10cm] at (3,-3) {
-\texttt{def decode(z, c):}\\
-\texttt{~~\# Concatenate z and c}\\
-\texttt{~~combined = torch.cat([z, c], dim=1)}\\
-\texttt{~~\# Pass through decoder network}\\
-\texttt{~~hidden = self.decoder\_net(combined)}\\
-\texttt{~~\# Output parameters of distribution}\\
-\texttt{~~return self.output\_layer(hidden)}
-};
-\end{tikzpicture}
+\begin{lstlisting}
+def decode(z, c):
+    # Concatenate z and c
+    combined = torch.cat([z, c], dim=1)
+    # Pass through decoder network
+    hidden = self.decoder_net(combined)
+    # Output parameters of distribution
+    return self.output_layer(hidden)
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}{Decoder: $p(x|z,c)$}
