@@ -49,7 +49,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Section 3.1: Introduction to Autoencoders & VAEs (30 minutes)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction to Autoencoders \& VAEs}
+\section{Autoencoders (Continuations) \& Introduction to VAEs}
 
 \begin{frame}{Basic Autoencoder Recap}
   \begin{itemize}
@@ -181,7 +181,118 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{Application 1: Data Compression}
+  \begin{columns}
+    \column{0.7\textwidth}
+    \begin{itemize}
+      \item \textbf{Scenario}: Storage of massive document images (e.g., Billing Images)
+      \item \textbf{Approach}: Compress raw high-dimensional images to a 256-dimensional latent space
+      \item \textbf{Storage Savings}: Achieve significant storage reduction
+        \begin{itemize}
+          \item Raw: $256 \times 256 \times 3 \times 1\text{ Billion} \times 1\text{ byte per pixel}$
+          \item Compressed: $256 \times 1\text{ Billion} \times 1\text{ byte per dimension}$
+        \end{itemize}
+      \item \textbf{Trade-offs}:
+        \begin{itemize}
+          \item Aggressive savings $\rightarrow$ low quality reconstruction
+          \item Better/advanced modelling $\rightarrow$ better reconstruction \& better savings
+        \end{itemize}
+    \end{itemize}
+    
+    \column{0.29\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.6]
+      % Input layer
+      \foreach \y in {1,...,5}
+        \node[circle, fill=blue, minimum size=0.3cm] (i\y) at (0,\y) {};
+      
+      % Hidden layer 1
+      \foreach \y [count=\yi] in {1.5,2.5,3.5,4.5}
+        \node[circle, fill=blue, minimum size=0.3cm] (h\yi) at (2,\y) {};
+        
+      % Bottleneck layer
+      \foreach \y [count=\yi] in {2.5,3.5}
+        \node[circle, fill=red, minimum size=0.3cm] (b\yi) at (4,\y) {};
+      
+      % Connections
+      \foreach \i in {1,...,5}
+        \foreach \j in {1,...,4}
+          \draw[-, opacity=0.2] (i\i) -- (h\j);
+          
+      \foreach \i in {1,...,4}
+        \foreach \j in {1,2}
+          \draw[-, opacity=0.2] (h\i) -- (b\j);
+      
+      % Labels
+      \node[align=center] at (0,0) {Raw Image\\(High-D)};
+      \node[align=center] at (4,1.5) {Latent Vector\\(256D)};
+      
+      \node[align=center, above] at (2,5.5) {Encoder Only};
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
 
+\begin{frame}{Application 2: Unsupervised Pre-training}
+  \begin{columns}
+    \column{0.55\textwidth}
+    \begin{itemize}
+      \item \textbf{Problem}: Limited labeled data for image classification
+      \item \textbf{Scenario}:
+        \begin{itemize}
+          \item $1,000,000$ photos \textbf{without labels}
+          \item $1,000$ photos \textbf{with labels}
+        \end{itemize}
+      \item \textbf{Approach}:
+        \begin{enumerate}
+          \item Pre-train the encoder using all 1M unlabeled photos (learn generic features)
+          \item Retain the trained Encoder and add a thin classification head
+          \item Train the classification head on the 1,000 labeled photos
+        \end{enumerate}
+    \end{itemize}
+    
+    \column{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+      % Input layer
+      \foreach \y in {1,...,5}
+        \node[circle, fill=gray!50, minimum size=0.3cm] (i\y) at (0,\y) {};
+      
+      % Hidden layer 1
+      \foreach \y [count=\yi] in {1.5,2.5,3.5,4.5}
+        \node[circle, fill=gray!50, minimum size=0.3cm] (h\yi) at (2,\y) {};
+        
+      % Retained Encoder Output
+      \foreach \y [count=\yi] in {2.5,3.5}
+        \node[circle, fill=blue, minimum size=0.3cm] (b\yi) at (4,\y) {};
+        
+      % Classification Layer
+      \foreach \y [count=\yi] in {2,3,4}
+        \node[circle, fill=green!70!black, minimum size=0.3cm] (c\yi) at (6,\y) {};
+      
+      % Connections (Frozen)
+      \foreach \i in {1,...,5}
+        \foreach \j in {1,...,4}
+          \draw[-, opacity=0.1] (i\i) -- (h\j);
+          
+      \foreach \i in {1,...,4}
+        \foreach \j in {1,2}
+          \draw[-, opacity=0.1] (h\i) -- (b\j);
+          
+      % Connections (Trained)
+      \foreach \i in {1,2}
+        \foreach \j in {1,2,3}
+          \draw[->, thick, green!50!black] (b\i) -- (c\j);
+      
+      % Labels
+      \node[align=center] at (0,0) {Input\\Photo};
+      \node[align=center] at (4,1.5) {Retained\\Encoder};
+      \node[align=center] at (6,1) {Class\\Outputs};
+      
+      % Fit box for retained encoder
+      \node[draw, dashed, gray, fit=(i1) (i5) (b2), label=above:Pre-trained Encoder] {};
+    \end{tikzpicture}
+  \end{columns}
+\end{frame}
 
 \begin{frame}{Motivation for Probabilistic Modeling}
   \begin{itemize}
