@@ -1448,7 +1448,7 @@ Common debugging tips:
 
 \draw[->,thick] (x1) -- node[above] {encode} (z1);
 \draw[->,thick] (z1) -- node[above] {decode} (x2);
-\draw[<->,thick,dashed] (x1) to[bend below] node[below] {reconstruction error} (x2);
+\draw[<->,thick,dashed] (x1) to[bend right] node[below] {reconstruction error} (x2);
 \end{tikzpicture}
 
 \end{center}
@@ -1559,8 +1559,7 @@ D_{KL}(q(z|x) \| p(z)) = \int q(z|x) \log \frac{q(z|x)}{p(z)} dz
     % Posterior
     \draw[domain=-1.5:1.5,smooth,variable=\x,red,thick] plot ({\x},{1.2*exp(-(\x-0.7)^2/0.3)});
     \node[red] at (-1.2,1.2) {$q(z|x)$};
-    321\end{tikzpicture}
-        `
+    \end{tikzpicture}
     \end{column}
     \begin{column}{0.5\textwidth}
     \centering
@@ -1582,7 +1581,6 @@ D_{KL}(q(z|x) \| p(z)) = \int q(z|x) \log \frac{q(z|x)}{p(z)} dz
 
 \node at (0,-1) {Each input maps to a different Gaussian};
 \end{tikzpicture}
-        `
     \end{column}
 \end{columns}
 
@@ -1786,7 +1784,7 @@ where $\beta_t$ increases from 0 to final value over training
 
 % Implementation
 \node[rectangle,draw,fill=gray!10,rounded corners,text width=8cm] at (4,-2) {
-\texttt{# Linear KL annealing}\\
+\texttt{\# Linear KL annealing}\\
 \texttt{def get\_beta(step, warmup\_steps, max\_beta=1.0):}\\
 \texttt{~~if step > warmup\_steps:}\\
 \texttt{~~~~return max\_beta}\\
@@ -2013,11 +2011,11 @@ Warning signs to monitor:
     % Example implementation
 \node[rectangle,draw,fill=gray!10,rounded corners,text width=10cm] at (3,-3) {
 \texttt{def decode(z, c):}\\
-\texttt{~~# Concatenate z and c}\\
+\texttt{~~\# Concatenate z and c}\\
 \texttt{~~combined = torch.cat([z, c], dim=1)}\\
-\texttt{~~# Pass through decoder network}\\
+\texttt{~~\# Pass through decoder network}\\
 \texttt{~~hidden = self.decoder\_net(combined)}\\
-\texttt{~~# Output parameters of distribution}\\
+\texttt{~~\# Output parameters of distribution}\\
 \texttt{~~return self.output\_layer(hidden)}
 };
 \end{tikzpicture}
@@ -2083,25 +2081,25 @@ Each produces a distribution that depends on both $x$ and $c$.
 
 
 \begin{frame}{Conditional ELBO}
-\begin{itemize}
-\item Goal: Maximize conditional log-likelihood $\log p(x|c)$
-\item Derivation parallels standard ELBO:
-\begin{align}
-\log p(x|c) &\geq \mathbb{E}_{q(z|x,c)}[\log p(x|z,c)] - D_{KL}(q(z|x,c) \| p(z|c))
-\end{align}
-\item Components:
-  \begin{itemize}
-  \item Conditional reconstruction: $\mathbb{E}_{q(z|x,c)}[\log p(x|z,c)]$
-  \item Conditional KL divergence: $D_{KL}(q(z|x,c) \| p(z|c))$
-  \end{itemize}
-\end{itemize}
+\textbf{Goal:} Maximize conditional log-likelihood $\log p(x|c)$
+
+\textbf{Derivation} parallels standard ELBO:
+\[
+\log p(x|c) \geq \mathbb{E}_{q(z|x,c)}[\log p(x|z,c)] - D_{KL}(q(z|x,c) \| p(z|c))
+\]
+
+\textbf{Components:}
+
+Conditional reconstruction: $\mathbb{E}_{q(z|x,c)}[\log p(x|z,c)]$
+
+Conditional KL divergence: $D_{KL}(q(z|x,c) \| p(z|c))$
 
 \begin{center}
 \begin{tikzpicture}
 % ELBO components
 \node[rectangle,draw,fill=blue!20,rounded corners,minimum width=4cm,minimum height=1cm] (elbo) at (0,0) {Conditional ELBO};
-\node[rectangle,draw,fill=green!20,rounded corners,minimum width=3.5cm,minimum height=1cm] (rec) at (-2.5,-2) {Conditional\\Reconstruction};
-\node[rectangle,draw,fill=red!20,rounded corners,minimum width=3.5cm,minimum height=1cm] (kl) at (2.5,-2) {Conditional\\KL Divergence};
+\node[rectangle,draw,fill=green!20,rounded corners,minimum width=3.5cm,minimum height=1cm,align=center] (rec) at (-2.5,-2) {Conditional\\Reconstruction};
+\node[rectangle,draw,fill=red!20,rounded corners,minimum width=3.5cm,minimum height=1cm,align=center] (kl) at (2.5,-2) {Conditional\\KL Divergence};
 
 \draw[->,thick] (elbo) -- (rec);
 \draw[->,thick] (elbo) -- (kl);
