@@ -712,7 +712,7 @@
 
 \begin{frame}{Probabilistic Latent Variable Model}
 \begin{itemize}
-\item VAE is a latent variable model: $p(x,z) = p(z)p(x|z)$
+\item VAE is a latent variable model: $p(x,z) = p(z)p(x|z)$ \textcolor{blue}{($z$ is fixed, $x$ is unknown)}
 \item Goal: Maximize likelihood of observed data $p(x)$
 \item Problem: $p(x) = \int p(z)p(x|z)dz$ is intractable
 \item Solution: Variational approximation with $q(z|x)$ (approximate postierior for $p(z|x)$)
@@ -735,8 +735,7 @@
 \node[below] at (6,-0.5) {$q(z|x) \approx p(z|x)$};
 
 % Integration
-\node[draw,rounded corners,text width=9cm] at (3.5,-2) {$p(x) = \int p(z)p(x|z)dz$ (intractable)\\
-$\log p(x) \geq \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}(q(z|x) \| p(z))$ (ELBO)};
+\node[draw,rounded corners,text width=6cm] at (3.5,-2) {$p(x) = \int p(z)p(x|z)dz$ (intractable)};
 \end{tikzpicture}
 \end{center}
 \end{frame}
@@ -879,16 +878,16 @@ $\log p(x) \geq \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}(q(z|x) \| p(z))$ (ELBO
 \draw[->,thick] (logvar) -- (var) node[midway,above] {$\exp$};
 
 % Uncertainty visualization in 1D
-\draw[->,thick] (0,-2) -- (8,-2) node[right] {$z$};
-\draw[->,thick] (0,-2) -- (0,0) node[above] {$q(z|x)$};
+\draw[->,thick] (0,-4) -- (8,-4) node[right] {$z$};
+\draw[->,thick] (0,-4) -- (0,-2) node[above] {$q(z|x)$};
 
 \draw[domain=0:8, smooth, variable=\x, red, thick] 
-  plot ({\x}, {-2+1.5*exp(-(\x-4)^2/0.5)});
+  plot ({\x}, {-4+1.5*exp(-(\x-4)^2/0.5)});
 \draw[domain=0:8, smooth, variable=\x, blue, thick] 
-  plot ({\x}, {-2+1.5*exp(-(\x-4)^2/2.0)});
+  plot ({\x}, {-4+1.5*exp(-(\x-4)^2/2.0)});
 
-\node[red] at (2.5,-1) {Low variance};
-\node[blue] at (6.5,-1) {High variance};
+\node[red] at (2.5,-3) {Low variance};
+\node[blue] at (6.5,-3) {High variance};
 \end{tikzpicture}
 \end{center}
 \end{frame}
