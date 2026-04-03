@@ -28,7 +28,7 @@ The `docs/summary.md` is a good overview.
 *   **Recommendation**: Add a "Prerequisites" or "Setup" section if students need specific libraries (like PyTorch) to run the hands-on notebooks, although this might be covered in a `ReadMe.md`.
 
 ## Checklist
-- [ ] Fix notation inconsistency in `main.tex` (latent dimension $k$ vs $d$).
+- [x] Fix notation inconsistency in `main.tex` (latent dimension $k$ vs $d$).
 - [ ] Correct typo "postierior" to "posterior" in `main.tex` (line 719).
 - [ ] Explore using `listings` or `minted` for code snippets in `main.tex`.
 - [ ] Modularize `main.tex` by splitting it into smaller files.

@@ -821,8 +821,8 @@
       
     Encoder outputs:
         \begin{itemize}
-          \item Mean vector: $\mu_\phi(x) \in \mathbb{R}^d$
-          \item Log-variance: $\log \sigma^2_\phi(x) \in \mathbb{R}^d$
+          \item Mean vector: $\mu_\phi(x) \in \mathbb{R}^k$
+          \item Log-variance: $\log \sigma^2_\phi(x) \in \mathbb{R}^k$
         \end{itemize}
   \end{columns}
 \end{frame}
@@ -832,7 +832,7 @@
 
 \begin{frame}{Mean Vector $\mu(x)$}
 \begin{itemize}
-\item $\mu(x) \in \mathbb{R}^d$ defines center of $q(z|x)$
+\item $\mu(x) \in \mathbb{R}^k$ defines center of $q(z|x)$
 \item Typically modeled by final layer of encoder network
 \item No activation function (unbounded output)
 \item Interpretable as "best guess" for latent code
@@ -860,7 +860,7 @@
 
 \begin{frame}{Variance Vector $\sigma^2(x)$}
 \begin{itemize}
-\item $\sigma^2(x) \in \mathbb{R}^d$ defines uncertainty in $q(z|x)$
+\item $\sigma^2(x) \in \mathbb{R}^k$ defines uncertainty in $q(z|x)$
 \item Network typically outputs $\log \sigma^2(x)$ for numerical stability
 \item Apply $\exp$ to get positive variances
 \item Larger variance = more uncertainty about latent code
@@ -1163,7 +1163,7 @@
 \begin{itemize}
 \item Maps latent code $z$ to parameters of $p(x|z)$
 \item Mirror of encoder architecture (typically)
-\item Input: latent vector $z \in \mathbb{R}^d$
+\item Input: latent vector $z \in \mathbb{R}^k$
 \item Output: parameters for data distribution $p(x|z)$
 \item Training objective: maximize $\log p(x|z)$
 \end{itemize}
@@ -1199,7 +1199,7 @@ Symmetric architectures common:\\
 \begin{frame}{Mapping $z \to p(x|z)$ | Bernoulli Likelihood}
 \begin{itemize}
 \item For binary data: $p(x|z) = \text{Bernoulli}(x; \theta(z))$
-\item $\theta(z) \in [0,1]^D$ is probability of each bit being 1
+\item $\theta(z) \in [0,1]^d$ is probability of each bit being 1
 \item Final decoder layer uses sigmoid activation: $\sigma(a) = \frac{1}{1+e^{-a}}$
 \item Negative log-likelihood = binary cross-entropy loss
 \item $-\log p(x|z) = -\sum_i [x_i \log \theta_i(z) + (1-x_i) \log (1-\theta_i(z))]$
