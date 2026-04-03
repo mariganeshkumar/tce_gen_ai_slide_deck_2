@@ -34,6 +34,33 @@ Ensure students code solutions from scratch and don't receive unfair answers. Ru
 git grep "# Hint"
 ```
 
+### 3. Add Student Information & Submission Instructions
+Ensure that every hands-on notebook includes a standardized section for student details and submission instructions at the end.
+
+#### Example Format:
+
+**Student Information Cell (Markdown):**
+```markdown
+## 📝 Student Information
+
+Please fill in your details below before submitting.
+
+- **Student Name:** *Type your name here*
+- **Roll Number:** *Type your roll number here*
+- **Date of Completion:** *Type date here*
+```
+
+**Submission Instructions Cell (Markdown):**
+```markdown
+## 📤 Submission Instructions
+
+Please submit your completed `.ipynb` notebook file to the Google Form linked below:
+
+🔗 **[Submit Here](https://docs.google.com/forms/d/e/.../viewform?usp=dialog)**
+
+⚠️ **Deadline:** [Specify Deadline Here]
+```
+
 ---
 
 ## 🛠 Troubleshooting: GitHub Rendering Errors
