@@ -2245,4 +2245,15 @@ Conditional KL divergence: $D_{KL}(q(z|x,c) \| p(z|c))$
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Summary: Recall the Journey}
+  \begin{itemize}
+    \item \textbf{The Baseline}: Standard Autoencoders map inputs to \textbf{deterministic points}. Good for compression, bad for generation.
+    \item \textbf{The Upgrade}: VAEs map inputs to \textbf{probability distributions} ($\mu, \sigma$) for a continuous latent space.
+    \item \textbf{The Hurdle}: How to backpropagate through a random sampling node?
+    \item \textbf{The Fix}: The \textbf{Reparameterization Trick} ($\mu + \sigma \cdot \epsilon$) isolates the randomness!
+    \item \textbf{The Goal}: \textbf{ELBO} balances reconstruction quality with latent space smoothness (KL divergence).
+    \item \textbf{The Extension}: \textbf{CVAEs} allow controlled generation by feeding a condition $c$.
+  \end{itemize}
+\end{frame}
+
 \end{document}
